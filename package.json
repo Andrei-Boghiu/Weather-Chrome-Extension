@@ -1,0 +1,30 @@
+{
+	"name": "browser-extension-react-typescript-boilerplate",
+	"version": "1.0.0",
+	"description": "This boilerplate provides a starting point for building browser extensions using React, TypeScript, and webpack.",
+	"main": "index.js",
+	"scripts": {
+		"start": "webpack --watch --progress --config webpack.dev.js",
+		"build": "webpack --watch --progress --config webpack.prod.js"
+	},
+	"keywords": [],
+	"author": "Andrei-Boghiu",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/chrome": "^0.0.267",
+		"@types/react": "^18.3.1",
+		"@types/react-dom": "^18.3.0",
+		"clean-webpack-plugin": "^4.0.0",
+		"copy-webpack-plugin": "^12.0.2",
+		"css-loader": "^7.1.1",
+		"html-webpack-plugin": "^5.6.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"style-loader": "^4.0.0",
+		"ts-loader": "^9.5.1",
+		"typescript": "^5.4.5",
+		"webpack": "^5.91.0",
+		"webpack-cli": "^5.1.4",
+		"webpack-merge": "^5.10.0"
+	}
+}
