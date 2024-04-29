@@ -1,7 +1,7 @@
 {
-	"name": "browser-extension-react-typescript-boilerplate",
+	"name": "weather-chrome-extension",
 	"version": "1.0.0",
-	"description": "This boilerplate provides a starting point for building browser extensions using React, TypeScript, and webpack.",
+	"description": "weather chrome extension.",
 	"main": "index.js",
 	"scripts": {
 		"start": "webpack --watch --progress --config webpack.dev.js",
@@ -9,7 +9,7 @@
 	},
 	"keywords": [],
 	"author": "Andrei-Boghiu",
-	"license": "MIT",
+	"license": "UNLICENSED",
 	"devDependencies": {
 		"@types/chrome": "^0.0.267",
 		"@types/react": "^18.3.1",

@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
 	<React.StrictMode>
 		<div>
-			<h1>Welcome to [App Name]</h1>
+			<h1>Weather App</h1>
 			<p>Feel free to customize it as per your needs.</p>
 		</div>
 	</React.StrictMode>
