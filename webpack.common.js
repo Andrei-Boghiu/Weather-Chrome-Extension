@@ -61,7 +61,7 @@ function getHtmlPlugins(chunks) {
 	return chunks.map(
 		(chunk) =>
 			new HtmlPlugin({
-				title: 'Extension Name',
+				title: 'Weather App',
 				filename: `${chunk}.html`,
 				chunks: [chunk],
 			})
