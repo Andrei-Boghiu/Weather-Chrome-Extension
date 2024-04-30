@@ -41,3 +41,21 @@ export async function removeStoredCity(cityName: string): Promise<void> {
 	const filteredCities = cities.filter((city) => city.name !== cityName)
 	await setStoredCities(filteredCities)
 }
+
+export function setStoredOptions(options: LocalStorageOptions): Promise<void> {
+	const values: LocalStorage = { options }
+	return new Promise((resolve) => {
+		chrome.storage.local.set(values, () => {
+			resolve()
+		})
+	})
+}
+
+export function getStoredOptions(): Promise<LocalStorageOptions> {
+	const keys: LocalStorageKeys[] = ['options']
+	return new Promise((resolve) => {
+		chrome.storage.local.get(keys, (value: LocalStorage) => {
+			resolve(value.options)
+		})
+	})
+}
