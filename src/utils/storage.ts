@@ -1,7 +1,13 @@
 import { City } from './cityOptionList'
+import { OpenWeatherTempScale } from './api'
 
 export interface LocalStorage {
 	cities?: City[]
+	options?: LocalStorageOptions
+}
+
+export interface LocalStorageOptions {
+	tempScale: OpenWeatherTempScale
 }
 
 export type LocalStorageKeys = keyof LocalStorage

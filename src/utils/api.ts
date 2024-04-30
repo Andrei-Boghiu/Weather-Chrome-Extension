@@ -29,6 +29,8 @@ export interface WeatherData {
 	}
 }
 
+export type OpenWeatherTempScale = 'metric' | 'imperial'
+
 export async function fetchWeather(city: string, country: string): Promise<WeatherData> {
 	const coordinates = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},${country}&limit=1&appid=${WEATHER_API_KEY}`)
 	if (!coordinates.ok) {
@@ -36,7 +38,7 @@ export async function fetchWeather(city: string, country: string): Promise<Weath
 	}
 
 	const coordinatesData: CoordinatesData[] = await coordinates.json()
-	const { lat, lon } = coordinatesData[0]
+	const { lat, lon, name } = coordinatesData[0]
 
 	const weather = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`)
 	if (!weather.ok) {
@@ -44,6 +46,8 @@ export async function fetchWeather(city: string, country: string): Promise<Weath
 	}
 
 	const weatherData: WeatherData = await weather.json()
+
+	weatherData['name'] = name
 
 	return weatherData
 }
