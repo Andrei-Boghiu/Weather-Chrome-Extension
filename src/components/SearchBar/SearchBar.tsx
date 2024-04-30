@@ -6,12 +6,14 @@ import Button from '@mui/material/Button'
 import { useAutocomplete } from '@mui/base/useAutocomplete'
 import { Root, Input, Listbox, Option } from './styles'
 import { CityOptionInterface } from '../../popup/popup'
+import { addStoredCity, getStoredCities } from '../../utils/storage'
 
 export const SearchBar: React.FC<{
 	citiesOption: CityOptionInterface[]
 	setCities: any
 }> = ({ citiesOption, setCities }) => {
 	const [value, setValue] = React.useState<(typeof citiesOption)[number] | null>(null)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const { getRootProps, getInputProps, getListboxProps, getOptionProps, groupedOptions, focused } = useAutocomplete({
 		id: 'search-bar',
@@ -22,19 +24,30 @@ export const SearchBar: React.FC<{
 		isOptionEqualToValue: (option, value) => option.label === value.label,
 	})
 
-	const handleAddCity = () => {
-		console.log(value)
+	const handleAddCity = async () => {
+		setIsLoading(true)
+		try {
+			await addStoredCity(value.label)
 
-		setCities((prevValue: CityOptionInterface[]) => [...prevValue, value.label])
-
-		setValue(null)
+			const newCities = await getStoredCities()
+			setCities(newCities)
+		} catch (error) {
+			console.log(error)
+		} finally {
+			setValue(null)
+			setIsLoading(false)
+		}
 	}
 
 	return (
 		<div style={{ marginBottom: 14 }}>
 			<Root {...getRootProps()} className={focused ? 'Mui-focused' : ''}>
 				<Input placeholder='Add a city' {...getInputProps()} />
-				{value && <Button onClick={handleAddCity}>Add</Button>}
+				{value && (
+					<Button disabled={isLoading} onClick={handleAddCity}>
+						{isLoading ? '...' : 'Add'}
+					</Button>
+				)}
 			</Root>
 			{groupedOptions.length > 0 && (
 				<Listbox {...getListboxProps()}>

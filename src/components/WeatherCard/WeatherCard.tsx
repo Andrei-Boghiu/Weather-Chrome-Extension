@@ -4,10 +4,10 @@ import './WeatherCard.css'
 import { fetchWeather, WeatherData } from '../../utils/api'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { removeStoredCity, getStoredCities } from '../../utils/storage'
 
 const WeatherCardContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	return (
@@ -23,9 +23,10 @@ const WeatherCardContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 
 type WeatherCardState = 'loading' | 'error' | 'ready'
 
-export const WeatherCard: React.FC<{ city: string; setCities: any }> = ({ city, setCities }) => {
+export const WeatherCard: React.FC<{ city: string; setCities: any; cities: string[] }> = ({ city, setCities, cities }) => {
 	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
 	const [cardState, setCardState] = useState<WeatherCardState>('loading')
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	useEffect(() => {
 		fetchWeather(city)
@@ -47,8 +48,17 @@ export const WeatherCard: React.FC<{ city: string; setCities: any }> = ({ city, 
 		)
 	}
 
-	const handleRemove = () => {
-		console.log(weatherData.name)
+	const handleRemove = async () => {
+		setIsLoading(true)
+		try {
+			await removeStoredCity(city)
+			const newCities = await getStoredCities()
+			setCities(newCities)
+		} catch (error) {
+			console.log(error)
+		} finally {
+			setIsLoading(false)
+		}
 	}
 
 	return (
@@ -59,8 +69,8 @@ export const WeatherCard: React.FC<{ city: string; setCities: any }> = ({ city, 
 			<Typography variant='body2'>{weatherData?.weather[0].description}</Typography>
 			<Typography color='text.secondary'>Temp: {weatherData.main.temp}°C</Typography>
 			<Typography color='text.secondary'>Feels Like: {weatherData.main.feels_like}°C</Typography>
-			<Button style={{ marginTop: 8 }} size='small' variant='outlined' color='error' onClick={handleRemove}>
-				Remove
+			<Button disabled={isLoading} style={{ marginTop: 8 }} size='small' variant='outlined' color='error' onClick={handleRemove}>
+				{isLoading ? 'REMOVING' : 'REMOVE'}
 			</Button>
 		</WeatherCardContainer>
 	)

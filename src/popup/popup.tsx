@@ -2,25 +2,27 @@ import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import '@fontsource/roboto/300.css'
 import './popup.css'
-import { fetchWeather } from '../utils/api'
 import { WeatherCard } from '../components/WeatherCard/WeatherCard'
 import { SearchBar } from '../components/SearchBar/SearchBar'
+import { getStoredCities, addStoredCity, removeStoredCity } from '../utils/storage'
 
 export interface CityOptionInterface {
 	label: string
 }
 
 const App: React.FC<{}> = () => {
-	const [cities, setCities] = useState<string[]>(['London', 'adasdasdas'])
+	const [cities, setCities] = useState<string[]>([])
 	const citiesOption: CityOptionInterface[] = [{ label: 'Iasi' }, { label: 'London' }] // TO BE Changed with an API
+
+	useEffect(() => {
+		getStoredCities().then((cities) => setCities(cities))
+	}, [])
 
 	return (
 		<>
 			<SearchBar citiesOption={citiesOption} setCities={setCities} />
 
-			{cities.map((city, index) => (
-				<WeatherCard city={city} key={index} setCities={setCities} />
-			))}
+			{cities.length > 0 && cities.map((city, index) => <WeatherCard city={city} key={index} setCities={setCities} cities={cities} />)}
 		</>
 	)
 }
