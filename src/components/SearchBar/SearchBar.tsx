@@ -63,12 +63,12 @@ export const SearchBar: React.FC<{
 				<Root {...getRootProps()} className={focused ? 'Mui-focused' : ''} sx={{ width: 270 }}>
 					<Input placeholder='Add a city' {...getInputProps()} />
 					{value && (
-						<Button disabled={isLoading} onClick={handleAddCity}>
+						<Button disabled={isLoading} onClick={handleAddCity} variant='text' color='primary'>
 							{isLoading ? '...' : 'Add'}
 						</Button>
 					)}
 				</Root>
-				<IconButton color='primary' variant='soft' onClick={handleTempScaleChange}>
+				<IconButton color='primary' variant='solid' onClick={handleTempScaleChange}>
 					{options.tempScale === 'metric' ? '\u2103' : '\u2109'}
 				</IconButton>
 			</Box>

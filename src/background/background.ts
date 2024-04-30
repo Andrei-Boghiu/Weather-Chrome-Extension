@@ -12,5 +12,6 @@ chrome.runtime.onInstalled.addListener(() => {
 	setStoredCities([])
 	setStoredOptions({
 		tempScale: 'metric',
+		homeCity: { name: 'Munich', country: 'DE' },
 	})
 })
