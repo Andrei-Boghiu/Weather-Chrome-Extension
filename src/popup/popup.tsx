@@ -4,7 +4,8 @@ import '@fontsource/roboto/300.css'
 import './popup.css'
 import { WeatherCard } from '../components/WeatherCard/WeatherCard'
 import { SearchBar } from '../components/SearchBar/SearchBar'
-import { getStoredCities, addStoredCity, removeStoredCity } from '../utils/storage'
+import { getStoredCities } from '../utils/storage'
+import { AddCityCTA } from '../components/AddCityCTA/AddCityCTA'
 
 export interface CityOptionInterface {
 	label: string
@@ -21,8 +22,7 @@ const App: React.FC<{}> = () => {
 	return (
 		<>
 			<SearchBar citiesOption={citiesOption} setCities={setCities} />
-
-			{cities.length > 0 && cities.map((city, index) => <WeatherCard city={city} key={index} setCities={setCities} cities={cities} />)}
+			{cities.length > 0 ? cities.map((city, index) => <WeatherCard city={city} key={index} setCities={setCities} />) : <AddCityCTA />}
 		</>
 	)
 }

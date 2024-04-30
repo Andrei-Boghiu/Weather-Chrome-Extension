@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import ReactDOM from 'react-dom/client'
-import './WeatherCard.css'
 import { fetchWeather, WeatherData } from '../../utils/api'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -23,7 +21,7 @@ const WeatherCardContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 
 type WeatherCardState = 'loading' | 'error' | 'ready'
 
-export const WeatherCard: React.FC<{ city: string; setCities: any; cities: string[] }> = ({ city, setCities, cities }) => {
+export const WeatherCard: React.FC<{ city: string; setCities: any }> = ({ city, setCities }) => {
 	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
 	const [cardState, setCardState] = useState<WeatherCardState>('loading')
 	const [isLoading, setIsLoading] = useState<boolean>(false)
