@@ -11,6 +11,12 @@
 	"author": "Andrei-Boghiu",
 	"license": "UNLICENSED",
 	"devDependencies": {
+		"@emotion/react": "^11.11.4",
+		"@emotion/styled": "^11.11.5",
+		"@fontsource/roboto": "^5.0.13",
+		"@mui/icons-material": "^5.15.15",
+		"@mui/joy": "^5.0.0-beta.36",
+		"@mui/material": "^5.15.15",
 		"@types/chrome": "^0.0.267",
 		"@types/react": "^18.3.1",
 		"@types/react-dom": "^18.3.0",
