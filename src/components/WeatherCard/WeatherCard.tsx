@@ -21,13 +21,13 @@ const WeatherCardContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 
 type WeatherCardState = 'loading' | 'error' | 'ready'
 
-export const WeatherCard: React.FC<{ city: string; setCities: any }> = ({ city, setCities }) => {
+export const WeatherCard: React.FC<{ city: string; country: string; setCities: any }> = ({ city, country, setCities }) => {
 	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
 	const [cardState, setCardState] = useState<WeatherCardState>('loading')
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	useEffect(() => {
-		fetchWeather(city)
+		fetchWeather(city, country)
 			.then((data) => {
 				setWeatherData(data)
 				setCardState('ready')

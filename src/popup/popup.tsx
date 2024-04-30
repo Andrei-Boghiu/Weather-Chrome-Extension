@@ -6,14 +6,11 @@ import { WeatherCard } from '../components/WeatherCard/WeatherCard'
 import { SearchBar } from '../components/SearchBar/SearchBar'
 import { getStoredCities } from '../utils/storage'
 import { AddCityCTA } from '../components/AddCityCTA/AddCityCTA'
-
-export interface CityOptionInterface {
-	label: string
-}
+import { cityOptionList } from '../utils/cityOptionList'
+import { City } from '../utils/cityOptionList'
 
 const App: React.FC<{}> = () => {
-	const [cities, setCities] = useState<string[]>([])
-	const citiesOption: CityOptionInterface[] = [{ label: 'Iasi' }, { label: 'London' }] // TO BE Changed with an API
+	const [cities, setCities] = useState<City[]>([])
 
 	useEffect(() => {
 		getStoredCities().then((cities) => setCities(cities))
@@ -21,8 +18,12 @@ const App: React.FC<{}> = () => {
 
 	return (
 		<>
-			<SearchBar citiesOption={citiesOption} setCities={setCities} />
-			{cities.length > 0 ? cities.map((city, index) => <WeatherCard city={city} key={index} setCities={setCities} />) : <AddCityCTA />}
+			<SearchBar citiesOption={cityOptionList} setCities={setCities} />
+			{cities.length > 0 ? (
+				cities.map((cityObj, index) => <WeatherCard city={cityObj.name} country={cityObj.country} key={index} setCities={setCities} />)
+			) : (
+				<AddCityCTA />
+			)}
 		</>
 	)
 }

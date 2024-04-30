@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import { useAutocomplete } from '@mui/base/useAutocomplete'
 import { Root, Input, Listbox, Option } from './styles'
-import { CityOptionInterface } from '../../popup/popup'
+import { City, CityOption } from '../../utils/cityOptionList'
 import { addStoredCity, getStoredCities } from '../../utils/storage'
 
 export const SearchBar: React.FC<{
-	citiesOption: CityOptionInterface[]
-	setCities: any
+	citiesOption: CityOption[]
+	setCities: React.Dispatch<React.SetStateAction<City[]>>
 }> = ({ citiesOption, setCities }) => {
-	const [value, setValue] = React.useState<(typeof citiesOption)[number] | null>(null)
+	const [value, setValue] = useState<CityOption | null>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const { getRootProps, getInputProps, getListboxProps, getOptionProps, groupedOptions, focused } = useAutocomplete({
@@ -18,16 +18,21 @@ export const SearchBar: React.FC<{
 		getOptionLabel: (option) => option.label,
 		value,
 		onChange: (event, newValue) => setValue(newValue),
-		isOptionEqualToValue: (option, value) => option.label === value.label,
+		isOptionEqualToValue: (option, value) => option.label === value?.label,
 	})
 
 	const handleAddCity = async () => {
 		setIsLoading(true)
 		try {
-			await addStoredCity(value.label)
-
-			const newCities = await getStoredCities()
-			setCities(newCities)
+			if (value) {
+				const cityToAdd: City = {
+					name: value.label,
+					country: value.country,
+				}
+				await addStoredCity(cityToAdd)
+				const newCities = await getStoredCities()
+				setCities(newCities)
+			}
 		} catch (error) {
 			console.log(error)
 		} finally {
@@ -48,8 +53,10 @@ export const SearchBar: React.FC<{
 			</Root>
 			{groupedOptions.length > 0 && (
 				<Listbox {...getListboxProps()}>
-					{(groupedOptions as typeof citiesOption).map((option, index) => (
-						<Option {...getOptionProps({ option, index })}>{option.label}</Option>
+					{groupedOptions.map((option, index) => (
+						<Option key={index} {...getOptionProps({ option, index })}>
+							{option.label} ({option.country})
+						</Option>
 					))}
 				</Listbox>
 			)}
