@@ -32,7 +32,7 @@ export interface WeatherData {
 export type OpenWeatherTempScale = 'metric' | 'imperial'
 
 export async function fetchWeather(city: string, country: string, tempScale: OpenWeatherTempScale): Promise<WeatherData> {
-	const coordinates = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},${country}&limit=1&appid=${WEATHER_API_KEY}`)
+	const coordinates = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city},${country}&limit=1&appid=${WEATHER_API_KEY}`)
 	if (!coordinates.ok) {
 		throw new Error('COORDINATES API ERROR')
 	}

@@ -21,15 +21,16 @@ const WeatherCardContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 
 type WeatherCardState = 'loading' | 'error' | 'ready'
 
-export const WeatherCard: React.FC<{ city: string; country: string; setCities: any; options: LocalStorageOptions }> = ({
-	city,
-	country,
-	setCities,
-	options,
-}) => {
+export const WeatherCard: React.FC<{
+	city: string
+	country: string
+	setCities: any | null
+	options: LocalStorageOptions
+	actionButton: Function
+	isLoading: boolean
+}> = ({ city, country, setCities, options, actionButton, isLoading }) => {
 	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
 	const [cardState, setCardState] = useState<WeatherCardState>('loading')
-	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	useEffect(() => {
 		fetchWeather(city, country, options.tempScale)
@@ -51,18 +52,6 @@ export const WeatherCard: React.FC<{ city: string; country: string; setCities: a
 		)
 	}
 
-	const handleRemove = async () => {
-		setIsLoading(true)
-		try {
-			await removeStoredCity(city)
-			const newCities = await getStoredCities()
-			setCities(newCities)
-		} catch (error) {
-			console.log(error)
-		} finally {
-			setIsLoading(false)
-		}
-	}
 	const scale = options.tempScale === 'metric' ? '\u2103' : '\u2109'
 	return (
 		<WeatherCardContainer>
@@ -76,7 +65,14 @@ export const WeatherCard: React.FC<{ city: string; country: string; setCities: a
 			<Typography color='text.secondary'>
 				Feels Like: {weatherData.main.feels_like} {scale}
 			</Typography>
-			<Button disabled={isLoading} style={{ marginTop: 8 }} size='small' variant='outlined' color='error' onClick={handleRemove}>
+			<Button
+				disabled={isLoading}
+				style={{ marginTop: 8 }}
+				size='small'
+				variant='outlined'
+				color='error'
+				onClick={() => actionButton(city)}
+			>
 				{isLoading ? 'REMOVING' : 'REMOVE'}
 			</Button>
 		</WeatherCardContainer>

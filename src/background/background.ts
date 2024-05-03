@@ -11,6 +11,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.runtime.onInstalled.addListener(() => {
 	setStoredCities([])
 	setStoredOptions({
+		overlayEnabled: false,
 		tempScale: 'metric',
 		homeCity: { name: 'Munich', country: 'DE' },
 	})

@@ -1,0 +1,8 @@
+.overlay_content_script_2b89b {
+	position: fixed;
+	top: 10%;
+	left: 10%;
+	max-width: 240px;
+	max-height: 240px;
+	z-index: 999999;
+}
