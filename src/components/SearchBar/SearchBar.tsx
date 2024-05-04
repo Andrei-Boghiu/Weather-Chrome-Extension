@@ -7,6 +7,9 @@ import { Root, Input, Listbox, Option } from './styles'
 import { City, CityOption } from '../../utils/cityOptionList'
 import { addStoredCity, getStoredCities } from '../../utils/storage'
 import { LocalStorageOptions, setStoredOptions } from '../../utils/storage'
+import { PictureInPicture } from '../svg/svgs'
+import { Messages } from '../../utils/messages'
+import './SearchBar.css'
 
 export const SearchBar: React.FC<{
 	citiesOption: CityOption[]
@@ -57,10 +60,18 @@ export const SearchBar: React.FC<{
 		})
 	}
 
+	const handleOverlayChange = () => {
+		chrome.tabs.query({ active: true }, (tabs) => {
+			if (tabs.length > 0) {
+				chrome.tabs.sendMessage(tabs[0].id, Messages.TOGGLE_OVERLAY)
+			}
+		})
+	}
+
 	return (
 		<div style={{ marginBottom: 14 }}>
 			<Box display='flex' sx={{ justifyContent: 'space-between' }}>
-				<Root {...getRootProps()} className={focused ? 'Mui-focused' : ''} sx={{ width: 270 }}>
+				<Root {...getRootProps()} className={`${focused ? 'Mui-focused' : ''} m-4`} sx={{ width: 270 }}>
 					<Input placeholder='Add a city' {...getInputProps()} />
 					{value && (
 						<Button disabled={isLoading} onClick={handleAddCity} variant='text' color='primary'>
@@ -68,8 +79,11 @@ export const SearchBar: React.FC<{
 						</Button>
 					)}
 				</Root>
-				<IconButton color='primary' variant='solid' onClick={handleTempScaleChange}>
+				<IconButton color='primary' variant='solid' onClick={handleTempScaleChange} className='m-4'>
 					{options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+				</IconButton>
+				<IconButton color='primary' variant='solid' onClick={handleOverlayChange} className='m-4'>
+					<PictureInPicture />
 				</IconButton>
 			</Box>
 			{groupedOptions.length > 0 && (

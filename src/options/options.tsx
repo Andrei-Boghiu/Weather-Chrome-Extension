@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Input from '@mui/joy/Input'
-import { CardActions } from '@mui/material'
+import { CardActions, Switch } from '@mui/material'
 import { LocalStorageOptions, getStoredOptions, setStoredOptions } from '../utils/storage'
 
 import './options.css'
@@ -23,6 +23,13 @@ const Options: React.FC<{}> = () => {
 	useEffect(() => {
 		getStoredOptions().then((options) => setOptions(options))
 	}, [])
+
+	const handleOverlaySwitch = (overlayEnabled: boolean) => {
+		setOptions({
+			...options,
+			overlayEnabled,
+		})
+	}
 
 	const handleHomeCityNameChange = (name: string) => {
 		setOptions({
@@ -89,8 +96,13 @@ const Options: React.FC<{}> = () => {
 						</CardContent>
 
 						<CardContent>
-							<Typography variant='body2'>Option One</Typography>
-							<Input placeholder='Type in here…' variant='outlined' />
+							<Typography variant='body2'>Overlay Enabled</Typography>
+							<Switch
+								color='primary'
+								checked={options.overlayEnabled}
+								onChange={(e, checked) => handleOverlaySwitch(checked)}
+								disabled={formState === 'saving'}
+							/>
 						</CardContent>
 
 						<CardActions>

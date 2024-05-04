@@ -3,18 +3,27 @@ import ReactDOM from 'react-dom/client'
 import { WeatherCard } from '../components/WeatherCard/WeatherCard'
 import { getStoredOptions, LocalStorageOptions } from '../utils/storage'
 import { Card } from '@mui/material'
+import { Messages } from '../utils/messages'
 import './contentScript.css'
 
 const ContentScript: React.FC<{}> = () => {
 	const [options, setOptions] = useState<LocalStorageOptions | null>(null)
-	const [removed, setRemoved] = useState<boolean>(false)
+	const [showOverlay, setShowOverlay] = useState<boolean>(false)
 
 	useEffect(() => {
 		getStoredOptions().then((options) => {
 			setOptions(options)
-			setRemoved(!options?.overlayEnabled)
+			setShowOverlay(options.overlayEnabled)
 		})
-	})
+	}, [])
+
+	useEffect(() => {
+		chrome.runtime.onMessage.addListener((msg) => {
+			if (msg === Messages.TOGGLE_OVERLAY) {
+				setShowOverlay(!showOverlay)
+			}
+		})
+	}, [showOverlay])
 
 	if (!options) {
 		return null
@@ -22,7 +31,7 @@ const ContentScript: React.FC<{}> = () => {
 
 	return (
 		<>
-			{!removed && (
+			{showOverlay && (
 				<Card className='overlay_content_script_2b89b' variant='outlined'>
 					<WeatherCard
 						city={options?.homeCity.name}
@@ -30,7 +39,7 @@ const ContentScript: React.FC<{}> = () => {
 						options={options}
 						setCities={null}
 						isLoading={false}
-						actionButton={() => setRemoved(true)}
+						actionButton={() => setShowOverlay(false)}
 					/>
 				</Card>
 			)}
